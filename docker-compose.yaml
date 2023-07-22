@@ -51,22 +51,29 @@ x-airflow-common: &airflow-common
     # and uncomment the "build" line below, Then run `docker-compose build` to build the images.
     image: ${AIRFLOW_IMAGE_NAME:-apache/airflow:2.6.3}
     # build: .
-    environment: &airflow-common-env
+    environment: &airflow-common-env # AIRFLOW__CORE__EXECUTOR: LocalExecutor
         AIRFLOW__CORE__EXECUTOR: CeleryExecutor
         AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
         # For backward compatibility, with Airflow <2.3
         AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
         AIRFLOW__CELERY__RESULT_BACKEND: db+postgresql://airflow:airflow@postgres/airflow
         AIRFLOW__CELERY__BROKER_URL: redis://:@redis:6379/0
-        AIRFLOW__CORE__FERNET_KEY: ""
+        AIRFLOW__CORE__FERNET_KEY: "" # Secret key to save connection passwords in the db
         AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: "true"
-        AIRFLOW__CORE__LOAD_EXAMPLES: "true"
+        AIRFLOW__CORE__LOAD_EXAMPLES: "false" # true면 예시가 좀 많이 생겨서... false로 해놓자.
         AIRFLOW__API__AUTH_BACKENDS: "airflow.api.auth.backend.basic_auth,airflow.api.auth.backend.session"
         # yamllint disable rule:line-length
         # Use simple http server on scheduler for health checks
         # See https://airflow.apache.org/docs/apache-airflow/stable/administration-and-deployment/logging-monitoring/check-health.html#scheduler-health-check-server
         # yamllint enable rule:line-length
         AIRFLOW__SCHEDULER__ENABLE_HEALTH_CHECK: "true"
+
+        # custom config
+        # AIRFLOW__WEBSERVER__WORKER_REFRESH_BATCH_SIZE: 0 # Number of workers to refresh at a time. When set to 0, worker refresh is disabled.
+        # AIRFLOW__WEBSERVER__WORKER_REFRESH_INTERVAL: 0 # Number of seconds to wait before refreshing a batch of workers.
+        AIRFLOW__WEBSERVER__WORKERS: 1 # Number of workers to run the Gunicorn web server
+        AIRFLOW__CELERY__WORKER_CONCURRENCY: 1 # The number of worker processes
+
         # WARNING: Use _PIP_ADDITIONAL_REQUIREMENTS option ONLY for a quick checks
         # for other purpose (development, test and especially production usage) build/extend Airflow image.
         _PIP_ADDITIONAL_REQUIREMENTS: ${_PIP_ADDITIONAL_REQUIREMENTS:-}
@@ -122,6 +129,7 @@ services:
             retries: 5
             start_period: 30s
         restart: always
+
         depends_on:
             <<: *airflow-common-depends-on
             airflow-init:
