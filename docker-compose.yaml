@@ -69,10 +69,12 @@ x-airflow-common: &airflow-common
         AIRFLOW__SCHEDULER__ENABLE_HEALTH_CHECK: "true"
 
         # custom config
-        # AIRFLOW__WEBSERVER__WORKER_REFRESH_BATCH_SIZE: 0 # Number of workers to refresh at a time. When set to 0, worker refresh is disabled.
-        # AIRFLOW__WEBSERVER__WORKER_REFRESH_INTERVAL: 0 # Number of seconds to wait before refreshing a batch of workers.
-        AIRFLOW__WEBSERVER__WORKERS: 1 # Number of workers to run the Gunicorn web server
-        AIRFLOW__CELERY__WORKER_CONCURRENCY: 1 # The number of worker processes
+        AIRFLOW__WEBSERVER__WORKER_REFRESH_BATCH_SIZE: 0 # Number of workers to refresh at a time. When set to 0, worker refresh is disabled.
+        AIRFLOW__WEBSERVER__WORKER_REFRESH_INTERVAL: 0 # Number of seconds to wait before refreshing a batch of workers.
+        AIRFLOW__WEBSERVER__WORKERS: 2 # Number of workers to run the Gunicorn web server
+        AIRFLOW__CELERY__WORKER_CONCURRENCY: 2 # The number of worker processes
+        AIRFLOW__LOGGING__LOGGING_LEVEL: "INFO" # for debug
+        # AIRFLOW__LOGGING__LOGGING_LEVEL: "DEBUG" # for debug
 
         # WARNING: Use _PIP_ADDITIONAL_REQUIREMENTS option ONLY for a quick checks
         # for other purpose (development, test and especially production usage) build/extend Airflow image.
@@ -126,13 +128,18 @@ services:
         command: webserver
         ports:
             - "8080:8080"
-        healthcheck:
-            test: ["CMD", "curl", "--fail", "http://localhost:8080/health"]
-            interval: 30s
-            timeout: 10s
-            retries: 5
-            start_period: 30s
-        restart: always
+        volumes:
+            - ./dags:/opt/airflow/dags
+            - ./logs:/opt/airflow/logs
+            - ./plugins:/opt/airflow/plugins
+            - ./config:/opt/airflow/config
+        # healthcheck:
+        #     test: ["CMD", "curl", "--fail", "http://localhost:8080/health"]
+        #     interval: 30s
+        #     timeout: 10s
+        #     retries: 5
+        #     start_period: 30s
+        # restart: always
 
         depends_on:
             <<: *airflow-common-depends-on

@@ -1,6 +1,6 @@
 # styl-airflow
 
-for batching data ingestion and processing
+single node airflow for batching data ingestion and processing
 
 ## set uid for host, container auth connect
 
@@ -32,3 +32,6 @@ celery -A airflow.executors.celery_executor.app status
 ## redis
 
 알자나. 여기저기에 쓰기 좋음. redis-cli로 접속해서 확인해보자.
+
+styl-airflow-airflow-worker-1 | [2023-07-22 16:23:02 +0000] [95] [INFO] Booting worker with pid: 95
+styl-airflow-airflow-worker-1 | [2023-07-22 16:23:02 +0000] [97] [INFO] Booting worker with pid: 97
