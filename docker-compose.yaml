@@ -12,11 +12,11 @@ services:
             - ./pgdata:/var/lib/postgresql/data
             - ./docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
         ports:
-            - "5432:5432"
+            - "30001:5432"
         expose:
-            - 5432
+            - 30001
         healthcheck:
-            test: ["CMD", "pg_isready", "-U", "airflow"]
+            test: ["CMD", "pg_isready", "-U", "airflow", "-d", "airflow_db"]
             interval: 10s
             retries: 5
             start_period: 5s

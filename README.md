@@ -6,7 +6,8 @@ airflow는 일단 로컬에서 설치형으로 작업하되, 외부 필요한 �
 
 ## docs
 
-[extra pkg](https://airflow.apache.org/docs/apache-airflow/stable/extra-packages-ref.html)
+[extra pkg](https://airflow.apache.org/docs/apache-airflow/stable/extra-packages-ref.html)  
+[pg13 docs korean](https://www.postgresql.kr/docs/13/)
 
 ## init
 
