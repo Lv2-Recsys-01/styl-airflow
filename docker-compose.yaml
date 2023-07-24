@@ -1,0 +1,23 @@
+version: "3.8"
+
+services:
+    postgres:
+        image: postgres:13
+        container_name: postgres
+        environment:
+            POSTGRES_USER: airflow
+            POSTGRES_PASSWORD: airflow
+            POSTGRES_DB: airflow_db
+        volumes:
+            - ./pgdata:/var/lib/postgresql/data
+            - ./docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+        ports:
+            - "30001:5432"
+        expose:
+            - 30001
+        healthcheck:
+            test: ["CMD", "pg_isready", "-U", "airflow", "-d", "airflow_db"]
+            interval: 10s
+            retries: 5
+            start_period: 5s
+        # restart: always
