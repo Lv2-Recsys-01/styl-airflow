@@ -3,7 +3,6 @@
 SELECT rolname FROM pg_roles;
 SELECT * FROM pg_user;
 
-
 -- CREATE DATABASE airflow_db;
 -- CREATE DATABASE airflow;
 -- CREATE USER airflow WITH PASSWORD 'airflow';
