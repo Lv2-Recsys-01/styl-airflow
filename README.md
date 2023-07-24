@@ -28,9 +28,16 @@ airflow db check # db reachable?
 airflow db reset
 
 
-airflow users create --username admin --firstname admin --lastname admin --role Admin --email darrenkwondev46@gmail.com
+airflow users create --username admin \
+    --firstname admin --lastname admin \
+    --role Admin \
+    --email darrenkwondev46@gmail.com
+
 airflow users list
 
 
 airflow webserver --port 8080
+airflow scheduler
+
+
 ```
