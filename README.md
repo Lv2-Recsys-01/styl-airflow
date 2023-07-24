@@ -38,6 +38,12 @@ airflow users list
 
 airflow webserver --port 8080
 airflow scheduler
+```
 
+## troubleshooting
 
+### Task exited with return code Negsignal.SIGTRAP
+
+```bash
+export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
 ```
