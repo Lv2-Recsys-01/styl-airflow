@@ -4,6 +4,10 @@
 .env
 .venv/
 pgdata/
+airflow-webserver.
+style-web-app.pem
+logging
+styl-airflow
 airflow-webserver.pid
 
 # gitignore.io

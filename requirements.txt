@@ -1,2 +1,5 @@
 apache-airflow==2.6.2
 psycopg2==2.9.6
+python-dotenv
+pandas
+paramiko
